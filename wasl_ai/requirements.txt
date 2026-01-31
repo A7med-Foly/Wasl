@@ -1,0 +1,9 @@
+pandas
+pdfplumber
+sentence-transformers
+chromadb
+fastapi
+uvicorn
+pytest
+spacy
+reportlab

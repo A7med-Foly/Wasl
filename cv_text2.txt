@@ -1,0 +1,41 @@
+Ahmed Foly Ahmed
+folya1432@gmail.com | 01119953183 | linkedin.com/in/a7medfoly | github.com/A7med-Foly
+SUMMARY
+MotivatedComputerSciencestudentwithsolidexperienceinMachineLearning,ImageProcessing,and
+Data-DrivenSoftwareDevelopment. SkilledinPython,problem-solving,andbuildingpracticalapplications
+rangingfromMLmodelsandautomationscriptstoimageenhancementtools. AdeptatworkingwithGoogleEarth
+Engine,computervisiontechniques,anddataminingworkflows. Passionateaboutlearning,creatingimpactful
+projects,andturningcomplexconceptsintoworkingsolutions.
+Education
+BachelorofComputerScience,SuezUniversity Sept2022–present
+• GPA:3.3/4.0
+• Coursework: DataStructures&Algorithms,ArtificialIntelligence,OperatingSystems,Probability&Statistics,
+MachineLearning,ImageProcessing,andComputationalTheory
+Certifications & Training
+MachineLearningSummerTraining–NTI&ITIDA 29Jun–24Jul2024
+• 90hoursMLtraining+30hoursfreelancingskills.
+MachineLearningSummerTraining–CreativaInnovationHub Jul2025
+DeepLearningSummerTraining–CreativaInnovationHub Aug2025
+NVIDIADLIProgram: GenerativeAI(BeginnerLevel)–ITI Sep25–Oct112025
+FutureAWSAIScientistNanodegree–Udacity&AWS Jun2025–Nov2025
+• TraininginAWSAIservices,MLworkflows,andappliedcloudAIprojects.
+MachineLearningSpecialization–Coursera Sep2024
+• CompletedspecializationinsupervisedML,regularization,andMLpipelines.
+Projects
+AutismDetection–DataMiningProject
+• PerformedEDAandpreprocessingonautismdatasets.
+• TrainedMLmodelsforclassificationandevaluatedinterpretability.
+PrecipitationPredictionModel
+• BuiltMLmodeltopredictprecipitationusingclimatologicaldatasets.
+• Appliedstatisticalanalysisandmodelevaluation.
+EnvironmentalClimateAnalysis(2020–2024)
+• AnalyzedclimatevariablesusingGoogleEarthEngineforQattaraDepression.
+• Generatedmaps,.tiffiles,statisticaltables,andvisualizations.
+WeatherDataMultithreadedProcessor
+• BuiltPythontooltofetchandprocessdailyclimatedatausingGEE.
+• AutomateddataexporttoExcel.
+Technologies
+• ProgrammingLanguages: Python,C/C++,SQL,JavaScript,HTML/CSS
+• ML&DataScience: NumPy,Pandas,TensorFlow,Keras,Scikit-learn,DataCleaning,EDA,ModelTraining&
+Evaluation,CostFunctions,FeatureEngineering
+• Tools&Frameworks: Kivy,Tkinter,SQLite,Selenium,Git/GitHub,Jupyter,GoogleEarthEngine

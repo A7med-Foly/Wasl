@@ -1,0 +1,109 @@
+Abdallah Elhoseny
++201011756074 | abdallahelhoseny0@gmail.com | GitHub | LinkedIn
+AI Engineer & Data Scientist
+CAREER OBJECTIVE
+AI Engineer deeply engaged with the field of data science and artificial intelligence. Have a strong passion for working with NLP
+techniques, Machine Learning & Deep Learning models, Generative AI, automation workflows, and data science concepts.
+EDUCATION Sep 2021 - Feb 2026
+BACHELOR OF ARTIFICIAL INTELLIGENCE ENGINEERING
+UNIVERSITY OF MANSOURA
+CGPA: 3.96
+FOURTH PLACE IN MY CLASS PROGRAM
+GRADUATION PROJECT 1 GRADE: A+
+GRADUATION PROJECT 2 GRADE: A+
+PROFESSIONAL EXPERIENCE
+Tips Hindawi: Generative AI (LLMs) Oct 2025 - Dec 2025
+An online 6 weeks internship
+Skills developed: [ LLMs, RAG, Faiss, Streamlit, Deployment, GenAI, Faiss, Streamlit, Deployment, ]
+(Certificate)
+Digital Egypt Pioneers Initiative: Microsoft Machine Learning Track Oct 2024 - Mar 2025
+A Hybrid 6 months internship
+Skills developed: [Prompt Engineering, Math, Python Programming,Machine Learning Techniques, Deep
+Learning, NLP with Attention Models, Computer Vision and Transfer Learning, Azure AI Fundamentals]
+(Certificate)
+National Telecommunication Institute: Artificial Intelligence Aug 2024 - Sep 2024
+A 4 weeks (120 hour) online training
+Skills developed: [Python Programming, Machine Learning Techniques, Deep Learning, Computer Vision]
+(Certificate)
+Zewail City of Science and Technology: Artificial Intelligence Aug 2023 - Nov 2023
+A 50 hour online internship
+Skills developed: [Python Programming,Machine Learning Techniques, Deep Learning]
+(Certificate)
+Aug 2023 - Sep 2023
+Huawei ICT Academy-Egypt: HCIA
+HCIA course offered by Huawei ICT Academy in a hybrid internship by Mansoura University
+Skills developed: [Python Programming, Machine Learning Techniques, Deep Learning, Computer Vision]
+(Certificate)
+SKILLS
+Technical Skills
+Data (preprocessing & visualization & EDA) for ML modeling, Power BI
+Programming: Python, Pandas, NumPy, scikit-learn, Matplotlib, Seaborn
+Machine Learning & Deep Learning: Classical ML , TensorFlow, PyTorch, transfer learning
+NLP & Information Retrieval: Text processing, TF-IDF, embeddings, HuggingFace, LangChain, FAISS, Chroma
+Computer Vision: OpenCV, CNNs, object detection, image classification
+Agents & Automation: AI agents, CrewAI, workflow automation with n8n
+Deployment & Tools: Docker, Render, Azure, API keys, Git/GitHub, Visual Studio, PowerPoint
+Soft Skills
+LANGUAGES
+Analytical Problem-Solving
+Self-Learning & Adaptability ARABIC: C2
+Effective Project Presentation ENGLISH: C1
+Time Management & Prioritization GERMAN: A1
+Clear Communication
+SPANISH: A1
+Team Collaboration
+Goal-Oriented & Result-Driven
+PROJECTS
+Graduation Project 1: SAHLA – Speech and Hearing Language Assistant
+Developed a mobile application to facilitate communication for non-hearing and non-speaking individuals through
+Arabic Sign Language translation. Integrated speech-to-text and text-to-speech components using AI APIs and
+open-source frameworks.
+(REPO)
+Graduation Project 2: FLEX AI Life Coach Web App
+A full-stack AI-powered life coaching web application that delivers personalized recommendations and
+conversational guidance using agentic AI workflows and retrieval-augmented generation (RAG) pipelines.
+(REPO)
+Social Media Digest – AI-Powered Content Aggregator
+Developed an automated workflow to reduce screen time by consolidating updates from multiple platforms (X,
+Reddit, YouTube, News) into a single intelligence digest. Utilized n8n for multi-source orchestration and LLMs for
+semantic summarization and trend analysis.
+(REPO)
+MentalAK – End-to-End AI Therapy Assistant
+Built an AI-based therapy assistant for predicting mental well-being using ensemble ML models and an AI agent for
+personalized therapeutic responses.
+(REPO)
+ProCrew – AI-Powered Product Search Assistant
+Developed a multi-agent product search assistant system using CrewAI and no-code workflow orchestration (n8n) for
+automated search intelligence.
+(REPO)
+Virtual Chess Board with Hand Gesture Control
+Developed a webcam-based chess game controlled by hand gestures using OpenCV and MediaPipe with AI-powered
+opponent logic.
+(REPO)
+BotCorn – Semantic Movie Recommendation System
+Created a semantic search-based movie recommendation app with interactive dashboard and embeddings-based
+retrieval system.
+(REPO)
+Real-Time Object Detection for Autonomous Vehicles
+Implemented an object detection system using YOLOv8 with FastAPI for real-time inference and cloud deployment.
+(REPO)
+LEADERSHIP & VOLUNTEERING
+Team Leader – Digital Egypt Pioneers Initiative (DEPI), Skills Dynamix (2024)
+Led a team during DEPI Round 2 (Internship), coordinating project development and mentoring participants in AI and
+data science tasks.
+(Certificate)
+Founder & Organizer — Octware Team, Mansoura University (2022 – Present)
+Co-founded a student-led technical community focused on promoting AI and software innovation among
+undergraduates.
+Organized multiple events, including hackathons and the Youth Engineering Summit, fostering collaboration between
+students and industry professionals.
+Mentored junior students in AI fundamentals, programming, and project development, helping them prepare for
+competitions and research projects.
+Led outreach efforts to encourage youth participation in technology-driven initiatives and bridge the gap between
+academia and practical application.
+(Link)
+Volunteer — Community Tech Events and Hackathons (2021 – 2024)
+Assisted in organizing national and university-level hackathons, ensuring event logistics, participant coordination,
+and technical support.
+Promoted awareness of AI ethics, innovation, and research-driven problem solving through workshops and campus
+initiatives.
