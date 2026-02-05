@@ -1,0 +1,54 @@
+[
+    {
+        "id": 1,
+        "title": "Machine Learning Engineer",
+        "company": "Tech Corp",
+        "description": "We are looking for an ML Engineer with experience in Python, TensorFlow, and Computer Vision. Knowledge of AWS is a plus.",
+        "skills": [
+            "Python",   
+            "TensorFlow",
+            "Computer Vision",
+            "AWS",
+            "Deep Learning"
+        ]
+    },
+    {
+        "id": 2,
+        "title": "Flutter Developer",
+        "company": "App Studio",
+        "description": "Seeking a Flutter developer to build mobile apps. Must know Dart and State Management.",
+        "skills": [
+            "Flutter",
+            "Dart",
+            "Mobile Development",
+            "Android",
+            "iOS"
+        ]
+    },
+    {
+        "id": 3,
+        "title": "Data Scientist",
+        "company": "Data Insights",
+        "description": "Analyze large datasets using Python, Pandas, and Scikit-learn. Experience with Data Visualization is required.",
+        "skills": [
+            "Python",
+            "Pandas",
+            "Scikit-learn",
+            "Data Visualization",
+            "SQL"
+        ]
+    },
+    {
+        "id": 4,
+        "title": "Backend Developer",
+        "company": "Server Solutions",
+        "description": "Python Backend Developer needed. Experience with FastAPI or Django is essential.",
+        "skills": [
+            "Python",
+            "FastAPI",
+            "Django",
+            "SQL",
+            "API Development"
+        ]
+    }
+]
