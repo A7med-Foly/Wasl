@@ -2,12 +2,12 @@
     "info": {
         "_postman_id": "b3e9a5c8-1234-5678-9abc-def012345678",
         "name": "Wasl AI API",
-        "description": "Collection for testing Wasl Resume Parser API",
+        "description": "Collection for testing Wasl Resume Parser & Matcher",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "item": [
         {
-            "name": "Parse Resume (Local)",
+            "name": "1. Parse Only (Local)",
             "request": {
                 "method": "POST",
                 "header": [],
@@ -37,7 +37,7 @@
             "response": []
         },
         {
-            "name": "Parse Resume (Ngrok - UPDATE URL)",
+            "name": "2. Parse & Match (Job Recs) - Local",
             "request": {
                 "method": "POST",
                 "header": [],
@@ -52,16 +52,46 @@
                     ]
                 },
                 "url": {
-                    "raw": "https://flamelike-piteously-chu.ngrok-free.dev/resume/parse",
+                    "raw": "http://localhost:8000/resume/parse-and-match",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8000",
+                    "path": [
+                        "resume",
+                        "parse-and-match"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "3. Parse & Match (Ngrok - Public)",
+            "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "file",
+                            "type": "file",
+                            "src": []
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "https://YOUR-NGROK-URL.ngrok-free.app/resume/parse-and-match",
                     "protocol": "https",
                     "host": [
-                        "flamelike-piteously-chu",
+                        "YOUR-NGROK-URL",
                         "ngrok-free",
-                        "dev"
+                        "app"
                     ],
                     "path": [
                         "resume",
-                        "parse"
+                        "parse-and-match"
                     ]
                 }
             },
