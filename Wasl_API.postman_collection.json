@@ -114,15 +114,26 @@
 			"name": "5. Career Path Recommendations",
 			"request": {
 				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
+				"header": [],
 				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"skills\": [\"Python\", \"JavaScript\", \"React\"],\n  \"num_paths\": 3\n}"
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": []
+						},
+						{
+							"key": "interests",
+							"type": "text",
+							"value": "Web Development, Artificial Intelligence"
+						},
+						{
+							"key": "num_paths",
+							"type": "text",
+							"value": "3"
+						}
+					]
 				},
 				"url": {
 					"raw": "http://localhost:8000/career/recommend",
@@ -172,7 +183,7 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:8000/resume/full-analysis?target_role=Software Engineer",
+					"raw": "http://localhost:8000/resume/full-analysis?target_role=Software Engineer&weekly_hours=15&jobs_json=%5B%7B%22id%22%3A%20%223U3egkw7McXH6OTWs2EI%22%2C%20%22title%22%3A%20%22Financial%20Analyst%22%2C%20%22company%22%3A%20%22Banque%20Misr%22%2C%20%22description%22%3A%20%22We%20are%20looking%20for%20a%20financial%20analyst...%22%2C%20%22skills%22%3A%20%5B%22Financial%20Modeling%22%2C%20%22Excel%22%2C%20%22Power%20BI%22%5D%2C%20%22location%22%3A%20%22online%22%2C%20%22type%22%3A%20%22fulltime%22%2C%20%22salary%22%3A%2010000%7D%5D",
 					"protocol": "http",
 					"host": ["localhost"],
 					"port": "8000",
@@ -180,7 +191,18 @@
 					"query": [
 						{
 							"key": "target_role",
-							"value": "Software Engineer"
+							"value": "Software Engineer",
+							"description": "Optional target role for skill gap analysis"
+						},
+						{
+							"key": "weekly_hours",
+							"value": "15",
+							"description": "Available study hours per week for learning plan"
+						},
+						{
+							"key": "jobs_json",
+							"value": "[{\"id\": \"3U3egkw7McXH6OTWs2EI\", \"title\": \"Financial Analyst\", \"company\": \"Banque Misr\", \"description\": \"We are looking for a financial analyst...\", \"skills\": [\"Financial Modeling\", \"Excel\", \"Power BI\"], \"location\": \"online\", \"type\": \"fulltime\", \"salary\": 10000}]",
+							"description": "Optional JSON string of Firebase jobs array to match against"
 						}
 					]
 				}

@@ -7,13 +7,11 @@ learning plan with specific resources, projects, and milestones.
 import os
 import json
 from typing import List, Dict, Any, Optional
-from dotenv import load_dotenv
+from wasl_ai.src.config import settings
 from langchain_core.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import JsonOutputParser
 from pydantic import BaseModel, Field
-
-load_dotenv()
 
 
 # --- Output Schema ---
@@ -51,15 +49,15 @@ class LearningPlan(BaseModel):
 
 def _get_llm():
     """Initialize the LLM via OpenRouter."""
-    api_key = os.getenv("OPENROUTER_API_KEY")
+    api_key = settings.OPENROUTER_API_KEY
     if not api_key:
-        raise ValueError("OPENROUTER_API_KEY not set in environment")
+        raise ValueError("OPENROUTER_API_KEY not set in configuration/environment")
     
     return ChatOpenAI(
-        model="openai/gpt-4o-mini",
-        temperature=0.2,
+        model=settings.LLM_MODEL,
+        temperature=settings.LEARNING_PLANNER_TEMPERATURE,
         api_key=api_key,
-        base_url="https://openrouter.ai/api/v1"
+        base_url=settings.LLM_BASE_URL
     )
 
 

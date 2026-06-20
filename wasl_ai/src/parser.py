@@ -1,15 +1,12 @@
 import os
 import json
 import pdfplumber
-from dotenv import load_dotenv
+from wasl_ai.src.config import settings
 from langchain_core.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import JsonOutputParser
 from pydantic import BaseModel, Field
 from typing import List, Optional
-
-# Load environment variables
-load_dotenv()
 
 
 # Define Data Structure for LLM Output
@@ -42,7 +39,7 @@ def parse_resume(text):
     Parses resume text into a structured JSON format using OpenRouter.
     Requires OPENROUTER_API_KEY environment variable.
     """
-    api_key = os.getenv("OPENROUTER_API_KEY")
+    api_key = settings.OPENROUTER_API_KEY
     if not api_key:
         print("WARNING: OPENROUTER_API_KEY not found. Returning empty structure.")
         return {
@@ -52,12 +49,11 @@ def parse_resume(text):
         }
 
     # Initialize OpenRouter LLM (via LangChain OpenAI integration)
-    # Using 'openai/gpt-4o-mini' as requested by user
     llm = ChatOpenAI(
-        model="openai/gpt-4o-mini",
-        temperature=0,
+        model=settings.LLM_MODEL,
+        temperature=settings.PARSER_TEMPERATURE,
         api_key=api_key,
-        base_url="https://openrouter.ai/api/v1"
+        base_url=settings.LLM_BASE_URL
     )
     
     parser = JsonOutputParser(pydantic_object=ResumeData)

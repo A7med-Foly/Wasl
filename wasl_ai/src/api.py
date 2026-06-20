@@ -279,20 +279,37 @@ async def analyze_skills_endpoint(request: SkillAnalysisRequest):
 # ═══════════════════════════════════════════
 
 @app.post("/career/recommend", tags=["Career"])
-async def career_recommend_endpoint(request: CareerRequest):
-    """Get AI-powered career path recommendations based on skills, education, experience, and projects."""
+async def career_recommend_endpoint(
+    file: UploadFile = File(...),
+    interests: Optional[str] = Form(None, description="Career interests or goals"),
+    num_paths: int = Form(5, description="Number of career paths to recommend")
+):
+    """Get AI-powered career path recommendations based on an uploaded PDF resume."""
+    tmp_path = _save_upload_to_temp(file)
     try:
+        raw_text, parsed_data = _extract_and_parse(tmp_path)
+        skills = parsed_data.get('skills', [])
+        education = parsed_data.get('education', [])
+        experience = parsed_data.get('experience', [])
+        
         result = recommend_career_paths(
-            skills=request.skills,
-            education=request.education,
-            experience=request.experience,
-            projects=request.projects,
-            interests=request.interests,
-            num_paths=request.num_paths,
+            skills=skills,
+            education=education,
+            experience=experience,
+            interests=interests,
+            num_paths=num_paths,
         )
-        return result
+        return {
+            "parsed_resume": parsed_data,
+            "recommendations": result
+        }
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        if os.path.exists(tmp_path):
+            os.remove(tmp_path)
 
 
 # ═══════════════════════════════════════════
