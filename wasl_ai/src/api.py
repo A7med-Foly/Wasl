@@ -9,7 +9,7 @@ Exposes all AI capabilities as REST endpoints:
 - Learning plan generation
 - Full pipeline (all-in-one analysis)
 """
-from fastapi import FastAPI, UploadFile, File, HTTPException, Query
+from fastapi import FastAPI, UploadFile, File, HTTPException, Query, Form
 from fastapi.middleware.cors import CORSMiddleware
 import shutil
 import os
@@ -18,7 +18,7 @@ from typing import Optional, List
 from pydantic import BaseModel, Field
 
 from wasl_ai.src.parser import parse_resume, extract_text_from_pdf
-from wasl_ai.src.matcher import match_resume_to_jobs, get_all_jobs, get_available_domains
+from wasl_ai.src.matcher import match_resume_to_jobs, match_resume_to_provided_jobs, get_all_jobs, get_available_domains
 from wasl_ai.src.skill_analyzer import analyze_skill_gap
 from wasl_ai.src.career_advisor import recommend_career_paths, recommend_from_parsed_resume
 from wasl_ai.src.learning_planner import generate_learning_plan, generate_plan_from_gap_analysis
@@ -58,6 +58,26 @@ class LearningPlanRequest(BaseModel):
     education: Optional[List[str]] = Field(None)
     experience: Optional[List[str]] = Field(None)
     weekly_hours: int = Field(15, description="Available study hours per week")
+
+
+class FirebaseJob(BaseModel):
+    """Job schema matching what Flutter sends from Firebase."""
+    id: str = Field(..., description="Firebase document ID")
+    title: str = Field(..., description="Job title")
+    description: str = Field('', description="Job description")
+    skills: List[str] = Field(default_factory=list, description="Required skills (already flattened from reqSkills)")
+    company: Optional[str] = Field(None)
+    location: Optional[str] = Field(None)
+    type: Optional[str] = Field(None, description="fulltime, parttime, etc.")
+    salary: Optional[float] = Field(None)
+
+
+class DynamicMatchRequest(BaseModel):
+    """Request model for matching against Firebase jobs."""
+    resume_text: str = Field(..., description="Raw resume text or skill summary")
+    resume_skills: Optional[List[str]] = Field(None, description="Explicit list of skills for better matching")
+    jobs: List[FirebaseJob] = Field(..., description="List of active jobs from Firebase")
+    top_k: int = Field(5, description="Number of top matches to return")
 
 
 # ─── App Setup ───
@@ -167,6 +187,49 @@ async def list_domains_endpoint():
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@app.post("/jobs/match-dynamic", tags=["Jobs"])
+async def match_dynamic_jobs_endpoint(
+    file: UploadFile = File(...),
+    jobs_json: str = Form(..., description="JSON string of Firebase jobs array"),
+    top_k: int = Form(5, description="Number of top matches to return")
+):
+    """
+    Match a resume PDF against jobs provided by the client (from Firebase).
+
+    1. Parses the PDF to extract skills and experience.
+    2. Uses sentence-transformer + skill-overlap logic to rank jobs.
+    Job embeddings are cached by ID — first call computes, subsequent calls are instant.
+    """
+    import json as json_lib
+    tmp_path = _save_upload_to_temp(file)
+    try:
+        raw_text, parsed_data = _extract_and_parse(tmp_path)
+        skills = parsed_data.get('skills', [])
+        experience = parsed_data.get('experience', [])
+        
+        match_text = f"Skills: {', '.join(skills)}. Experience: {experience}"
+        dynamic_jobs = json_lib.loads(jobs_json)
+        
+        matches = match_resume_to_provided_jobs(
+            resume_text=match_text,
+            jobs=dynamic_jobs,
+            resume_skills=skills,
+            top_k=top_k,
+        )
+        return {
+            "parsed_resume": parsed_data,
+            "matches": matches, 
+            "total_returned": len(matches)
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        if os.path.exists(tmp_path):
+            os.remove(tmp_path)
+
+
 # ═══════════════════════════════════════════
 #  3. SKILL GAP ANALYSIS
 # ═══════════════════════════════════════════
@@ -262,15 +325,18 @@ async def full_analysis_endpoint(
     file: UploadFile = File(...),
     target_role: Optional[str] = Query(None, description="Optional target role for skill gap analysis"),
     weekly_hours: int = Query(15, description="Available study hours per week for learning plan"),
+    jobs_json: Optional[str] = Query(None, description="Optional JSON string of Firebase jobs array. If provided, matches against these instead of local DB."),
 ):
     """
     Complete AI analysis pipeline in one call:
     1. Parse the resume PDF
-    2. Find matching jobs
+    2. Find matching jobs (from Firebase if jobs_json provided, otherwise local DB)
     3. Analyze skill gaps (against top match or target_role)
     4. Recommend career paths
     5. Generate a learning plan
     """
+    import json as json_lib
+
     tmp_path = _save_upload_to_temp(file)
     try:
         # Step 1: Parse
@@ -282,11 +348,23 @@ async def full_analysis_endpoint(
         
         # Step 2: Match jobs
         match_text = f"Skills: {', '.join(skills)}. Experience: {experience}"
-        job_matches = match_resume_to_jobs(
-            resume_text=match_text,
-            resume_skills=skills,
-            top_k=5,
-        )
+        
+        if jobs_json:
+            # Use dynamic Firebase jobs
+            dynamic_jobs = json_lib.loads(jobs_json)
+            job_matches = match_resume_to_provided_jobs(
+                resume_text=match_text,
+                jobs=dynamic_jobs,
+                resume_skills=skills,
+                top_k=5,
+            )
+        else:
+            # Fallback to local jobs.json
+            job_matches = match_resume_to_jobs(
+                resume_text=match_text,
+                resume_skills=skills,
+                top_k=5,
+            )
         
         # Step 3: Skill gap analysis
         gap_target = target_role

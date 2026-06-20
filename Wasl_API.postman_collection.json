@@ -1,101 +1,190 @@
 {
-    "info": {
-        "_postman_id": "b3e9a5c8-1234-5678-9abc-def012345678",
-        "name": "Wasl AI API",
-        "description": "Collection for testing Wasl Resume Parser & Matcher",
-        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-    },
-    "item": [
-        {
-            "name": "1. Parse Only (Local)",
-            "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                    "mode": "formdata",
-                    "formdata": [
-                        {
-                            "key": "file",
-                            "type": "file",
-                            "src": []
-                        }
-                    ]
-                },
-                "url": {
-                    "raw": "http://localhost:8000/resume/parse",
-                    "protocol": "http",
-                    "host": [
-                        "localhost"
-                    ],
-                    "port": "8000",
-                    "path": [
-                        "resume",
-                        "parse"
-                    ]
-                }
-            },
-            "response": []
-        },
-        {
-            "name": "2. Parse & Match (Job Recs) - Local",
-            "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                    "mode": "formdata",
-                    "formdata": [
-                        {
-                            "key": "file",
-                            "type": "file",
-                            "src": []
-                        }
-                    ]
-                },
-                "url": {
-                    "raw": "http://localhost:8000/resume/parse-and-match",
-                    "protocol": "http",
-                    "host": [
-                        "localhost"
-                    ],
-                    "port": "8000",
-                    "path": [
-                        "resume",
-                        "parse-and-match"
-                    ]
-                }
-            },
-            "response": []
-        },
-        {
-            "name": "3. Parse & Match (Ngrok - Public)",
-            "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                    "mode": "formdata",
-                    "formdata": [
-                        {
-                            "key": "file",
-                            "type": "file",
-                            "src": []
-                        }
-                    ]
-                },
-                "url": {
-                    "raw": "https://YOUR-NGROK-URL.ngrok-free.app/resume/parse-and-match",
-                    "protocol": "https",
-                    "host": [
-                        "YOUR-NGROK-URL",
-                        "ngrok-free",
-                        "app"
-                    ],
-                    "path": [
-                        "resume",
-                        "parse-and-match"
-                    ]
-                }
-            },
-            "response": []
-        }
-    ]
+	"info": {
+		"_postman_id": "b3e9a5c8-1234-5678-9abc-def012345678",
+		"name": "Wasl AI API",
+		"description": "Collection for testing Wasl Resume Parser, Matcher, Career Advisor, and Learning Planner",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Parse Only",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": []
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/resume/parse",
+					"protocol": "http",
+					"host": ["localhost"],
+					"port": "8000",
+					"path": ["resume", "parse"]
+				}
+			}
+		},
+		{
+			"name": "2. Match Jobs (Local DB)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"resume_text\": \"Python, Machine Learning, TensorFlow\",\n  \"top_k\": 5\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8000/jobs/match",
+					"protocol": "http",
+					"host": ["localhost"],
+					"port": "8000",
+					"path": ["jobs", "match"]
+				}
+			}
+		},
+		{
+			"name": "3. Match Jobs (Firebase - Dynamic)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": []
+						},
+						{
+							"key": "jobs_json",
+							"type": "text",
+							"value": "[\n    {\n      \"id\": \"3U3egkw7McXH6OTWs2EI\",\n      \"title\": \"Financial Analyst\",\n      \"company\": \"Banque Misr\",\n      \"description\": \"We are looking for a financial analyst to support our investment and risk management teams.\",\n      \"skills\": [\"Financial Modeling\", \"Excel\", \"Power BI\", \"Accounting\"],\n      \"location\": \"online\",\n      \"type\": \"fulltime\",\n      \"salary\": 10000\n    },\n    {\n      \"id\": \"abc123def456\",\n      \"title\": \"Data Scientist\",\n      \"company\": \"Tech Solutions\",\n      \"description\": \"Looking for a data scientist with Python and ML experience.\",\n      \"skills\": [\"Python\", \"Machine Learning\", \"SQL\", \"TensorFlow\"],\n      \"location\": \"Cairo\",\n      \"type\": \"fulltime\",\n      \"salary\": 15000\n    },\n    {\n      \"id\": \"xyz789ghi012\",\n      \"title\": \"Flutter Developer\",\n      \"company\": \"App Studio\",\n      \"description\": \"Mobile developer needed for cross-platform apps.\",\n      \"skills\": [\"Flutter\", \"Dart\", \"Firebase\", \"REST APIs\"],\n      \"location\": \"Remote\",\n      \"type\": \"fulltime\",\n      \"salary\": 12000\n    }\n  ]"
+						},
+						{
+							"key": "top_k",
+							"type": "text",
+							"value": "3"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/jobs/match-dynamic",
+					"protocol": "http",
+					"host": ["localhost"],
+					"port": "8000",
+					"path": ["jobs", "match-dynamic"]
+				}
+			}
+		},
+		{
+			"name": "4. Skill Gap Analysis",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"candidate_skills\": [\"Python\", \"SQL\"],\n  \"target_role\": \"Data Scientist\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8000/skills/analyze",
+					"protocol": "http",
+					"host": ["localhost"],
+					"port": "8000",
+					"path": ["skills", "analyze"]
+				}
+			}
+		},
+		{
+			"name": "5. Career Path Recommendations",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"skills\": [\"Python\", \"JavaScript\", \"React\"],\n  \"num_paths\": 3\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8000/career/recommend",
+					"protocol": "http",
+					"host": ["localhost"],
+					"port": "8000",
+					"path": ["career", "recommend"]
+				}
+			}
+		},
+		{
+			"name": "6. Learning Plan",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"target_role\": \"Data Scientist\",\n  \"current_skills\": [\"Python\", \"SQL\"],\n  \"missing_skills\": [\"Machine Learning\", \"Pandas\", \"Statistics\"],\n  \"weekly_hours\": 15\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8000/learning/plan",
+					"protocol": "http",
+					"host": ["localhost"],
+					"port": "8000",
+					"path": ["learning", "plan"]
+				}
+			}
+		},
+		{
+			"name": "7. Full Pipeline Analysis",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": []
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/resume/full-analysis?target_role=Software Engineer",
+					"protocol": "http",
+					"host": ["localhost"],
+					"port": "8000",
+					"path": ["resume", "full-analysis"],
+					"query": [
+						{
+							"key": "target_role",
+							"value": "Software Engineer"
+						}
+					]
+				}
+			}
+		}
+	]
 }

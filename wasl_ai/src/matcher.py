@@ -199,3 +199,107 @@ def get_available_domains() -> List[str]:
     """Return a list of unique domains in the job database."""
     jobs, _ = load_jobs()
     return sorted(set(j.get('domain', 'Other') for j in jobs))
+
+
+# ═══════════════════════════════════════════
+#  DYNAMIC MATCHING (Firebase Jobs)
+# ═══════════════════════════════════════════
+
+# Cache: { job_id_str: embedding_vector }
+_dynamic_embedding_cache: Dict[str, Any] = {}
+
+
+def _get_job_text(job: Dict[str, Any]) -> str:
+    """Build a text representation for embedding from a job dict."""
+    skills_str = ' '.join(job.get('skills', []))
+    return f"{job.get('title', '')} {skills_str} {job.get('description', '')}"
+
+
+def match_resume_to_provided_jobs(
+    resume_text: str,
+    jobs: List[Dict[str, Any]],
+    resume_skills: Optional[List[str]] = None,
+    top_k: int = 5,
+    semantic_weight: float = 0.6,
+    skill_weight: float = 0.4,
+) -> List[Dict[str, Any]]:
+    """
+    Match a resume against a list of jobs provided by the client (e.g., from Firebase).
+
+    Uses the SAME sentence-transformer + skill-overlap logic as match_resume_to_jobs,
+    but caches embeddings by job ID so only new/unseen jobs get computed.
+
+    Args:
+        resume_text: Full text or skill summary of the candidate.
+        jobs: List of job dicts from Firebase (must have 'id', 'title', 'skills', 'description').
+        resume_skills: Optional explicit list of skills for skill-overlap scoring.
+        top_k: Number of top matches to return.
+        semantic_weight: Weight for semantic similarity (default 0.6).
+        skill_weight: Weight for explicit skill overlap (default 0.4).
+
+    Returns:
+        List of dicts with 'job' and 'score' keys, sorted by score descending.
+    """
+    global _dynamic_embedding_cache
+
+    if not resume_text or not jobs:
+        return []
+
+    model = get_model()
+
+    # --- Build embeddings (cache-aware) ---
+    job_embeddings_list = []
+    new_jobs_to_encode = []  # (index, job_id, text)
+    
+    for idx, job in enumerate(jobs):
+        job_id = str(job.get('id', idx))
+        if job_id in _dynamic_embedding_cache:
+            job_embeddings_list.append((idx, _dynamic_embedding_cache[job_id]))
+        else:
+            new_jobs_to_encode.append((idx, job_id, _get_job_text(job)))
+
+    # Batch-encode only the NEW jobs
+    if new_jobs_to_encode:
+        new_texts = [item[2] for item in new_jobs_to_encode]
+        new_embeddings = model.encode(new_texts, show_progress_bar=False)
+        for i, (idx, job_id, _) in enumerate(new_jobs_to_encode):
+            _dynamic_embedding_cache[job_id] = new_embeddings[i]
+            job_embeddings_list.append((idx, new_embeddings[i]))
+
+    # Sort by original index to maintain order
+    job_embeddings_list.sort(key=lambda x: x[0])
+    all_embeddings = np.array([emb for _, emb in job_embeddings_list])
+
+    # --- Score ---
+    resume_embedding = model.encode([resume_text])
+    similarities = cosine_similarity(resume_embedding, all_embeddings)[0]
+
+    results = []
+    for i, (idx, _) in enumerate(job_embeddings_list):
+        job = jobs[idx]
+        semantic_score = float(similarities[i])
+
+        if resume_skills and job.get('skills'):
+            skill_score = _compute_skill_overlap(resume_skills, job['skills'])
+            composite = semantic_weight * semantic_score + skill_weight * skill_score
+        else:
+            composite = semantic_score
+
+        # Return all original fields of the job object (preserving companyId, companyImg, requirments, etc. for Flutter)
+        job_res = dict(job)
+        job_res['id'] = str(job.get('id', ''))
+        # Ensure description is a string (and not None)
+        job_res['description'] = job.get('description', '')
+
+        results.append({
+            'job': job_res,
+            'score': round(composite, 3),
+            'semantic_score': round(semantic_score, 3),
+            'skill_overlap': round(
+                _compute_skill_overlap(resume_skills, job.get('skills', [])) if resume_skills else 0.0, 3
+            ),
+        })
+
+    results.sort(key=lambda x: x['score'], reverse=True)
+    return results[:top_k]
+
